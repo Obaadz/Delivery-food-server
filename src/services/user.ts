@@ -1,17 +1,18 @@
 import { ERROR_MESSAGES } from "../types/enums";
 import type { IUserDocument, User } from "../types/user";
 import UserModel from "../models/user";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { FilterQuery, PopulateOption, UpdateQuery } from "mongoose";
 
 export async function findUser(
   query: FilterQuery<IUserDocument>,
-  selectedItems?: string | string[]
+  selectedItems?: string | string[],
+  populateOptions?: PopulateOption["populate"]
 ) {
-  const dbUser: IUserDocument | null = await UserModel.findOne(query).select(
-    selectedItems ? selectedItems : undefined
-  );
+  const dbUser = (await UserModel.findOne(query)
+    .select(selectedItems ? selectedItems : undefined)
+    .populate(populateOptions || ("" as any))) as IUserDocument;
 
-  if (!dbUser) throw new Error(ERROR_MESSAGES.INCORRECT_EMAIL);
+  if (!dbUser) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
 
   return dbUser;
 }

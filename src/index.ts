@@ -4,7 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import v1Routes from "./routes/v1/index";
 import SocketServer from "./socket";
-import "dotenv";
+import "dotenv/config";
 
 const PORT = process.env.PORT || 5000,
   DB_URI = process.env.DB_URI || "",
