@@ -10,6 +10,7 @@ export default async (user: Pick<User, "email" | "password">): Promise<IUserDocu
     email: user.email,
     password: user.password,
   }).catch((err: any) => {
+    console.log(err.message);
     console.error("This error from loginUser utility function.");
 
     throw new Error(ERROR_MESSAGES.INCORRECT_EMAIL_OR_PASSWORD);

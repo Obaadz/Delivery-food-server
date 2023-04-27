@@ -8,7 +8,7 @@ export type User = {
   last_name?: string;
   first_name?: string;
   phone_number?: string;
-  image?: string;
+  profile_image?: string;
 };
 
 export type UserFromToken = JwtPayload &

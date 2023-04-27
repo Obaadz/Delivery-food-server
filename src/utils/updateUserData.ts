@@ -1,4 +1,4 @@
-import { updateUser } from "../services/user";
+import { findUserAndUpdate } from "../services/user";
 import { ERROR_MESSAGES } from "../types/enums";
 import { IUserDocument, UpdateUserData } from "../types/user";
 
@@ -6,7 +6,7 @@ export default async (_id: string, user: UpdateUserData): Promise<IUserDocument>
   if (!(user && (user.first_name || user.last_name || user.phone_number)))
     throw new Error(ERROR_MESSAGES.INVALID_USER_DATA);
 
-  const dbUser = await updateUser(
+  const dbUser = await findUserAndUpdate(
     { _id },
     {
       first_name: user.first_name || undefined,
