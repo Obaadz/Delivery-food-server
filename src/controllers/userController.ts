@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { JwtAuthExpressRequest } from "../middleware/jwtAuth";
-import { ERROR_MESSAGES } from "../types/enums";
+import { ERROR_MESSAGES, RESPONSE_MESSAGES } from "../types/enums";
 import { IUserDocument, UpdateUserData, User, UserFromToken } from "../types/user";
 import createUser from "../utils/createUser";
 import generateToken from "../utils/generateToken";
@@ -20,7 +20,7 @@ export class UserController {
 
       const token = generateToken(leanUser);
 
-      res.status(201).send({ token, message: "Authenticated" });
+      res.status(201).send({ token, message: RESPONSE_MESSAGES.AUTHENTICATED });
     } catch (err: any) {
       console.error("Error on register user controller:", err.message);
 
@@ -42,7 +42,7 @@ export class UserController {
 
       const token = generateToken(leanUser);
 
-      res.status(201).send({ token, message: "Authenticated" });
+      res.status(201).send({ token, message: RESPONSE_MESSAGES.AUTHENTICATED });
     } catch (err: any) {
       console.error("Error on login user controller:", err.message);
 
@@ -62,7 +62,7 @@ export class UserController {
 
       const token = generateToken(leanUser);
 
-      res.status(201).send({ token, message: "Authenticated" });
+      res.status(201).send({ token, message: RESPONSE_MESSAGES.USER_DATA_UPDATED });
     } catch (err: any) {
       console.error("Error on update user controller:", err.message);
 
@@ -78,7 +78,10 @@ export class UserController {
     try {
       const dbUser = await getUserById(authUser._id);
 
-      res.status(201).send({ user: dbUser.toObject(), message: "User data received..." });
+      res.status(201).send({
+        user: dbUser.toObject(),
+        message: RESPONSE_MESSAGES.USER_DATA_RECEIVED,
+      });
     } catch (err: any) {
       console.error("Error on getData user controller:", err.message);
 
