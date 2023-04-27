@@ -29,9 +29,16 @@ export async function insertUser(user: User) {
 
 export async function updateUser(
   query: FilterQuery<IUserDocument>,
-  update: UpdateQuery<IUserDocument>
+  update: UpdateQuery<IUserDocument>,
+  selectedItems?: string | string[]
 ) {
-  await UserModel.updateOne(query, update);
+  const dbUser = await UserModel.findOneAndUpdate(query, update).select(
+    selectedItems ? selectedItems : undefined
+  );
+
+  if (!dbUser) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
+
+  return dbUser as IUserDocument;
 }
 
 export async function deleteUser(user: Pick<User, "email">) {

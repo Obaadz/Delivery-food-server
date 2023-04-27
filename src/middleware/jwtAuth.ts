@@ -1,9 +1,10 @@
 import { expressjwt, Request as JwtAuthExpressRequest } from "express-jwt";
 import { Socket } from "socket.io";
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { UserFromToken } from "../types/user";
+import "dotenv/config";
 
-const secret = process.env.SECRET;
+const secret = process.env.SECRET as Secret;
 
 export const jwtAuthExpress = expressjwt({
   secret,

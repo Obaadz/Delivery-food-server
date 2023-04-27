@@ -1,9 +1,10 @@
 import { ERROR_MESSAGES } from "../types/enums";
-import { IUserDocument } from "../types/user";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-export default (user: IUserDocument): string => {
+export default (payload: JwtPayload): string => {
   const SECRET = process.env.SECRET;
+
   if (!SECRET) throw new Error(ERROR_MESSAGES.NO_SECRET_KEY_DEFINED);
-  return jwt.sign(user.toObject(), SECRET);
+
+  return jwt.sign(payload, SECRET);
 };
