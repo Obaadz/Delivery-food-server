@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import v1Routes from "./routes/v1/index";
 import SocketServer from "./socket";
+import errorHandler from "./middleware/errorHandler";
 import "dotenv/config";
 
 const PORT = process.env.PORT || 5000,
@@ -31,8 +32,10 @@ app.use(
 
 app.use(v1Routes);
 
-httpServer.listen(5000, () => {
-  console.log(`Listening on port: ${5000}`);
+app.use(errorHandler);
+
+httpServer.listen(PORT, () => {
+  console.log(`Listening on port: ${PORT}`);
 
   mongoose.set("strictQuery", false);
   mongoose.connect(DB_URI);
