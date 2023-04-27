@@ -7,4 +7,8 @@ export default (err: any, req: Request, res: Response, next: NextFunction) => {
     res
       .status(401)
       .send({ token: null, message: err.message || ERROR_MESSAGES.INCORRECT_TOKEN });
+  else if (err instanceof SyntaxError)
+    res
+      .status(400)
+      .send({ type: ERROR_MESSAGES.SYNTAX_JSON_ERROR, message: err.message || "" });
 };
