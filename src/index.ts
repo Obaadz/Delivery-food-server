@@ -1,4 +1,5 @@
 import express from "express";
+import nodemailer from "nodemailer";
 import { createServer } from "http";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -6,6 +7,7 @@ import v1Routes from "./routes/v1/index";
 import SocketServer from "./socket";
 import errorHandler from "./middleware/errorHandler";
 import "dotenv/config";
+import { sendForgetEmail } from "./services/email";
 
 const PORT = process.env.PORT || 5000,
   DB_URI = process.env.DB_URI || "",
@@ -41,4 +43,12 @@ httpServer.listen(PORT, () => {
   mongoose.connect(DB_URI);
 });
 
-export { PAGE_SIZE };
+export const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
+  },
+});
