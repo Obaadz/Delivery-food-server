@@ -8,7 +8,13 @@ export const userSchema = new Schema({
   phone_number: { type: String, required: false },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  profile_image: { type: String, required: false },
+  profile_image_base64: { type: String, required: false },
+});
+
+userSchema.virtual("profile_image_url").get(function () {
+  return `${
+    process.env.BACKEND_URL || "http://chat-test.ddns.net:5000"
+  }/v1/users/${this._id}/profile_image.webp`;
 });
 
 const UserModel =
