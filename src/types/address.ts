@@ -1,6 +1,6 @@
 export type Address = {
-  lat?: Number;
-  lon?: Number;
+  lat?: String;
+  lon?: String;
   house_number?: String;
   road?: String;
   neighbourhood?: String;

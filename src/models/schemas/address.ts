@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
 
 const addressSchema = new Schema({
-  lat: { type: Number },
-  lon: { type: Number },
+  lat: { type: String },
+  lon: { type: String },
   house_number: { type: String },
   road: { type: String },
   neighbourhood: { type: String },
