@@ -10,7 +10,7 @@ export const userSchema = new Schema({
   last_name: { type: String },
   phone_number: { type: String },
   profile_image_base64: { type: String },
-  address: { type: addressSchema },
+  address: { type: String },
 });
 
 userSchema.virtual("profile_image_url").get(function () {
