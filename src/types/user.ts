@@ -8,7 +8,7 @@ export type User = {
   last_name?: string;
   first_name?: string;
   phone_number?: string;
-  profile_image?: string;
+  profile_image_base64?: string;
 };
 
 export type UserFromToken = JwtPayload &
@@ -16,4 +16,6 @@ export type UserFromToken = JwtPayload &
 
 export interface IUserDocument extends Document, User {}
 
-export type UpdateUserData = Omit<User, "email"> & { confirm_password: string };
+export type UpdateUserData = Omit<User, "email"> & {
+  confirm_password: string;
+};

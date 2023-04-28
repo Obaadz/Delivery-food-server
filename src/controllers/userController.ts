@@ -64,8 +64,8 @@ export class UserController {
       authUser = req.auth as UserFromToken;
 
     try {
-      if (user.profile_image)
-        await updateUserProfileImage(authUser._id, user.profile_image);
+      if (user.profile_image_base64)
+        await updateUserProfileImage(authUser._id, user.profile_image_base64);
 
       const dbUser = await updateUserData(authUser._id, user),
         leanUser = dbUser.toObject();
@@ -88,10 +88,11 @@ export class UserController {
     const authUser = req.auth as UserFromToken;
 
     try {
-      const dbUser = await getUserById(authUser._id);
+      const dbUser = await getUserById(authUser._id),
+        leanUser = dbUser.toObject({ virtuals: ["profile_image_url"] });
 
       res.status(200).send({
-        user: dbUser.toObject(),
+        user: leanUser,
         message: RESPONSE_MESSAGES.USER_DATA_RECEIVED,
       });
     } catch (err: any) {
@@ -100,6 +101,28 @@ export class UserController {
       res
         .status(401)
         .send({ user: "null", message: err.message || ERROR_MESSAGES.SERVER_ERROR });
+    }
+  }
+
+  static async getProfileImage(req: Request, res: Response) {
+    const _id = req.params.id;
+
+    try {
+      const dbUser = await getUserById(_id, "profile_image_base64");
+
+      const base64Image = dbUser.profile_image_base64;
+
+      if (!base64Image)
+        return res.status(404).send(ERROR_MESSAGES.PROFILE_IMAGE_NOT_FOUND);
+
+      const buffer = Buffer.from(base64Image, "base64");
+
+      res.set("Content-Type", "image/webp");
+      res.send(buffer);
+    } catch (err: any) {
+      console.error("Error on getProfileImage user controller:", err.message);
+
+      res.status(500).send(ERROR_MESSAGES.SERVER_ERROR);
     }
   }
 }
