@@ -32,6 +32,8 @@ app.use(
   })
 );
 
+app.use("/images", express.static("public/images"));
+
 app.use(v1Routes);
 
 app.use(errorHandler);
