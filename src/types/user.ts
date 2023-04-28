@@ -1,5 +1,6 @@
 import type { Document } from "mongoose";
 import type { JwtPayload } from "jsonwebtoken";
+import type { Address } from "./address";
 
 export type User = {
   username: string;
@@ -9,6 +10,7 @@ export type User = {
   first_name?: string;
   phone_number?: string;
   profile_image_base64?: string;
+  address?: Address;
 };
 
 export type UserFromToken = JwtPayload &

@@ -1,14 +1,16 @@
 import mongoose, { Schema } from "mongoose";
 import { IUserDocument } from "../types/user";
+import addressSchema from "./schemas/address";
 
 export const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
-  first_name: { type: String, required: false },
-  last_name: { type: String, required: false },
-  phone_number: { type: String, required: false },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  profile_image_base64: { type: String, required: false },
+  first_name: { type: String },
+  last_name: { type: String },
+  phone_number: { type: String },
+  profile_image_base64: { type: String },
+  address: { type: addressSchema },
 });
 
 userSchema.virtual("profile_image_url").get(function () {

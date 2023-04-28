@@ -64,15 +64,18 @@ export class UserController {
       authUser = req.auth as UserFromToken;
 
     try {
-      if (user.profile_image_base64)
+      if (user.profile_image_base64) {
         await updateUserProfileImage(authUser._id, user.profile_image_base64);
+      }
 
-      const dbUser = await updateUserData(authUser._id, user),
-        leanUser = dbUser.toObject();
+      if (user.first_name || user.last_name || user.phone_number)
+        await updateUserData(authUser._id, user);
 
-      const token = generateToken({ _id: leanUser._id, email: leanUser.email });
+      const authHeader = req.headers.authorization as string;
 
-      console.debug("Debug on update user controller:", leanUser);
+      const token =
+        authHeader.replace("Bearer ", "") ||
+        generateToken({ _id: authUser._id, email: authUser.email });
 
       res.status(201).send({ token, message: RESPONSE_MESSAGES.USER_DATA_UPDATED });
     } catch (err: any) {
