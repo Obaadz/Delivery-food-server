@@ -68,7 +68,7 @@ export class UserController {
         await updateUserProfileImage(authUser._id, user.profile_image_base64);
       }
 
-      if (user.first_name || user.last_name || user.phone_number)
+      if (user.first_name || user.last_name || user.phone_number || user.address)
         await updateUserData(authUser._id, user);
 
       const authHeader = req.headers.authorization as string;
