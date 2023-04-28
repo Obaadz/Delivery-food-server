@@ -8,8 +8,8 @@ import { findItems } from "../services/item";
 const BACKEND_URL = process.env.BACKEND_URL || "http://chat-test.ddns.net:5000";
 
 const BANNERS = [
-  `${BACKEND_URL}/images/bannder1.png`,
-  `${BACKEND_URL}/images/bannder2.png`,
+  `${BACKEND_URL}/images/banner1.png`,
+  `${BACKEND_URL}/images/banner2.png`,
 ];
 
 export default async (): Promise<HomeData> => {
