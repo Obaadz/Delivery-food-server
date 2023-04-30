@@ -11,6 +11,7 @@ export const userSchema = new Schema({
   phone_number: { type: String },
   profile_image_base64: { type: String },
   address: { type: String },
+  forget_code: { type: String },
 });
 
 userSchema.virtual("profile_image_url").get(function () {

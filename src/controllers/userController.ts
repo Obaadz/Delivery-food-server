@@ -1,12 +1,16 @@
 import { Request, Response } from "express";
 import { JwtAuthExpressRequest } from "../middleware/jwtAuth";
+import { sendForgetEmail } from "../services/email";
 import { ERROR_MESSAGES, RESPONSE_MESSAGES } from "../types/enums";
-import { IUserDocument, UpdateUserData, User, UserFromToken } from "../types/user";
+import { UpdateUserData, User, UserFromToken } from "../types/user";
+import checkIfUserExistsByEmail from "../utils/checkIfUserExistsByEmail";
 import createUser from "../utils/createUser";
+import generateRandomCodeFrom6Digits from "../utils/generateRandomCodeFrom6Digits";
 import generateToken from "../utils/generateToken";
 import getUserById from "../utils/getUserById";
 import loginUser from "../utils/loginUser";
 import updateUserData from "../utils/updateUserData";
+import updateUserForgetCode from "../utils/updateUserForgetCode";
 import updateUserProfileImage from "../utils/updateUserProfileImage";
 
 export class UserController {
@@ -126,6 +130,32 @@ export class UserController {
       console.error("Error on getProfileImage user controller:", err.message);
 
       res.status(500).send(ERROR_MESSAGES.SERVER_ERROR);
+    }
+  }
+
+  static async generateForgetCode(req: Request, res: Response) {
+    const user: Pick<User, "email"> = req.body;
+
+    try {
+      // if(!(await checkIfUserExistsByEmail(user.email))) throw new Error(ERROR_MESSAGES.USER_NOT_FOUND)
+
+      const forget_code = generateRandomCodeFrom6Digits();
+
+      await updateUserForgetCode(user.email, forget_code);
+
+      sendForgetEmail(user.email, forget_code);
+
+      res.status(201).send({
+        forget_code,
+        message: RESPONSE_MESSAGES.SUCCESS,
+      });
+    } catch (err: any) {
+      console.error("Error on generateForgetCode user controller:", err.message);
+
+      res.status(404).send({
+        forget_code: "null",
+        message: err.message || ERROR_MESSAGES.SERVER_ERROR,
+      });
     }
   }
 }

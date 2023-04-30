@@ -7,6 +7,8 @@ export class HomeController {
     try {
       const home = await getHomeData();
 
+      console.debug("Debug on getData home controller:", home);
+
       res.status(200).send({ home, message: RESPONSE_MESSAGES.SUCCESS });
     } catch (err: any) {
       console.error("Error on getData home controller:", err.message);

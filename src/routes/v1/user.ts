@@ -9,5 +9,6 @@ userRoutes.post("/users/login", UserController.login);
 userRoutes.post("/users/update/me", jwtAuthExpress, UserController.update);
 userRoutes.get("/users/me", jwtAuthExpress, UserController.getData);
 userRoutes.get("/users/:id/profile_image.webp", UserController.getProfileImage);
+userRoutes.post("/users/forget", UserController.generateForgetCode);
 
 export { userRoutes };
