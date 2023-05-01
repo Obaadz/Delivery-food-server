@@ -11,6 +11,7 @@ import getUserById from "../utils/getUserById";
 import loginUser from "../utils/loginUser";
 import updateUserData from "../utils/updateUserData";
 import updateUserForgetCode from "../utils/updateUserForgetCode";
+import updateUserPassword from "../utils/updateUserPassword";
 import updateUserProfileImage from "../utils/updateUserProfileImage";
 
 export class UserController {
@@ -68,12 +69,14 @@ export class UserController {
       authUser = req.auth as UserFromToken;
 
     try {
-      if (user.profile_image_base64) {
+      if (user.profile_image_base64)
         await updateUserProfileImage(authUser._id, user.profile_image_base64);
-      }
 
       if (user.first_name || user.last_name || user.phone_number || user.address)
         await updateUserData(authUser._id, user);
+
+      if (user.email && user.forget_code && user.password)
+        await updateUserPassword(user.email, user);
 
       const authHeader = req.headers.authorization as string;
 
@@ -146,7 +149,6 @@ export class UserController {
       sendForgetEmail(user.email, forget_code);
 
       res.status(201).send({
-        forget_code,
         message: RESPONSE_MESSAGES.SUCCESS,
       });
     } catch (err: any) {

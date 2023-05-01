@@ -18,6 +18,4 @@ export type UserFromToken = JwtPayload &
 
 export interface IUserDocument extends Document, User {}
 
-export type UpdateUserData = Omit<User, "email"> & {
-  confirm_password: string;
-};
+export type UpdateUserData = User;

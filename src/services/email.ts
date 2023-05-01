@@ -5,7 +5,7 @@ export function sendForgetEmail(receiveEmail: string, forgetCode: string) {
     from: "obada347@gmail.com",
     to: receiveEmail,
     subject: `Food Ninja - Forget password code is: ${forgetCode}`,
-    text: `This is a message from Food ninja, your forget password code is: ${forgetCode} \n don't share it with other people.`,
+    text: `This is a message from Food ninja, your forget password code is: ${forgetCode} \n please don't share it with other people.`,
   };
 
   transporter.sendMail(message, (err, info) => {
