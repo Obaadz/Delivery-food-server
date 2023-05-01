@@ -75,9 +75,6 @@ export class UserController {
       if (user.first_name || user.last_name || user.phone_number || user.address)
         await updateUserData(authUser._id, user);
 
-      if (user.email && user.forget_code && user.password)
-        await updateUserPassword(user.email, user);
-
       const authHeader = req.headers.authorization as string;
 
       const token =
@@ -91,6 +88,21 @@ export class UserController {
       res
         .status(401)
         .send({ token: "null", message: err.message || ERROR_MESSAGES.SERVER_ERROR });
+    }
+  }
+
+  static async updatePassword(req: Request, res: Response) {
+    const user: Pick<UpdateUserData, "email" | "forget_code" | "password"> = req.body;
+
+    try {
+      if (user.email && user.forget_code && user.password)
+        await updateUserPassword(user.email, user);
+
+      res.status(201).send({ message: RESPONSE_MESSAGES.USER_PASSWORD_UPDATED });
+    } catch (err: any) {
+      console.error("Error on updatePassword user controller:", err.message);
+
+      res.status(401).send({ message: err.message || ERROR_MESSAGES.SERVER_ERROR });
     }
   }
 

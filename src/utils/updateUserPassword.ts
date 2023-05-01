@@ -9,13 +9,12 @@ export default async (
   if (!(user && email && user.forget_code && user.password))
     throw new Error(ERROR_MESSAGES.INVALID_USER_DATA);
 
-  const dbUser = await findUser({ email, forget_code: user.forget_code }).catch(
-    (err: any) => {
-      console.error("This error from updateUserForgetCode utility function.");
+  const dbUser = await findUser({ email }).catch((err: any) => {
+    console.error("This error from updateUserForgetCode utility function.");
 
-      throw new Error(ERROR_MESSAGES.INCORRECT_FORGET_CODE);
-    }
-  );
+    throw new Error(ERROR_MESSAGES.INCORRECT_FORGET_CODE);
+  });
+
   if (dbUser.forget_code === user.forget_code)
     await dbUser.updateOne({ password: user.password, forget_code: "" });
   else throw new Error(ERROR_MESSAGES.INCORRECT_FORGET_CODE);
