@@ -10,7 +10,7 @@ export type User = {
   phone_number?: string;
   profile_image_base64?: string;
   address?: string;
-  forget_code: string;
+  forget_code?: string;
 };
 
 export type UserFromToken = JwtPayload &

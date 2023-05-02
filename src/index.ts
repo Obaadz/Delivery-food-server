@@ -38,11 +38,11 @@ app.use(v1Routes);
 
 app.use(errorHandler);
 
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT, async () => {
   console.log(`Listening on port: ${PORT}`);
 
   mongoose.set("strictQuery", false);
-  mongoose.connect(DB_URI);
+  await mongoose.connect(DB_URI);
 });
 
 export const transporter = nodemailer.createTransport({
